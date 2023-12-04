@@ -9,6 +9,9 @@ target/day02rs: day02/main.rs
 target/day03rs: day03/main.rs
 	rustc -o $@ $?
 
+target/day04nim: day04/main.nim
+	nim c -o:$@ $?
+
 .PHONY: setup
 setup:
 	mkdir -p target
