@@ -23,7 +23,6 @@ proc part01(lines: openarray[string]): int =
 proc part02(lines: openarray[string]): int =
   var copies = newSeqWith[uint](lines.len(), 1)
   for cardIndex, line in lines.pairs():
-    echo copies
     let scratchCard = line.split(":")[1].strip().split("|")
     var count = 0
     var havings = newSeq[uint]()
