@@ -5,13 +5,14 @@ proc calculateNumberOfOptions(maxTime: uint, distance: uint): uint =
   #     (maxTime - holdTime) * holdTime > distance
   # which is equivalent to
   #     -(holdTime^2) + maxTime * holdTime - distance > 0
-  let x1 = (float(maxTime) - sqrt(float(maxTime) ^ 2 - 4 * float(distance))) / 2
-  let x2 = (float(maxTime) + sqrt(float(maxTime) ^ 2 - 4 * float(distance))) / 2
+  let maxTimeFloat = float(maxTime)
+  let delta = sqrt(maxTimeFloat ^ 2 - 4 * float(distance))
+  let x1 = (maxTimeFloat - delta) / 2
+  let x2 = (maxTimeFloat + delta) / 2
   # We transform x1 and x2 a bit to make sure that:
   # (1) only whole number is considered.
   # (2) the resulting distance is greater than the given distance.
-  let options = (x2 - 1).ceil() - (x1 + 1).floor() + 1
-  uint(options)
+  uint(ceil(x2 - 1) - floor(x1 + 1) + 1)
 
 proc parseNumbers(line: string): tuple[big: uint, small: seq[uint]] =
   var big = ""
