@@ -82,7 +82,6 @@ proc part02(maps: seq[seq[Mapping]], seeds: seq[uint]): uint =
     rangesToVisit.add(ExclusiveRange(lo: seedLo, hi: seedHi))
 
   for map in maps:
-    echo rangesToVisit
     var newRanges = newSeq[ExclusiveRange]()
     while rangesToVisit.len() > 0:
       let inputRange = rangesToVisit.pop()
