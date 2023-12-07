@@ -18,6 +18,9 @@ target/day05nim: day05/main.nim
 target/day06nim: day06/main.nim
 	nim c -o:$@ $?
 
+target/day07nim: day07/main.nim
+	nim c -o:$@ $?
+
 .PHONY: setup
 setup:
 	mkdir -p target
