@@ -14,68 +14,6 @@ proc makeStep(
     else:
       raiseAssert "invalid instruction"
 
-# Prime sieve.
-proc allPrimes(n: uint): seq[uint] =
-  var notPrimes: HashSet[uint]
-  notPrimes.init()
-  notPrimes.incl(0)
-  notPrimes.incl(1)
-  result = newSeq[uint]()
-  for x in 2..n:
-    if not notPrimes.contains(x):
-      result.add(x)
-      for y in 2..n.div(x):
-        notPrimes.incl(x * y)
-
-# Prime factorization.
-proc factorize(
-  x: uint,
-  primes: openarray[uint]
-): seq[tuple[prime: uint, power: uint]] =
-  var x = x
-  result = newSeq[tuple[prime: uint, power: uint]]()
-  for prime in primes:
-    if x == 0 or x == 1:
-      break
-
-    var power = 0.uint
-    while x.mod(prime) == 0:
-      x = x.div(prime)
-      power += 1
-
-    if power > 0:
-      result.add((prime, power))
-
-# Lowest common multiple.
-proc lcd(x: uint, y: uint, primes: openarray[uint]): uint =
-  let xFactors = factorize(x, primes)
-  let yFactors = factorize(y, primes)
-  var i = 0;
-  var j = 0;
-  result = 1
-  while i < xFactors.len and j < yFactors.len:
-    let xFactor = xFactors[i]
-    let yFactor = yFactors[j]
-    if xFactor.prime < yFactor.prime:
-      result *= xFactor.prime ^ xFactor.power
-      i += 1
-    elif xFactor.prime > yFactor.prime:
-      result *= yFactor.prime ^ yFactor.power
-      j += 1
-    else:
-      let power = xFactor.power.max(yFactor.power)
-      result *= xFactor.prime ^ power
-      i += 1
-      j += 1
-
-  for k in i..<xFactors.len:
-    let xFactor = xFactors[k]
-    result *= xFactor.prime ^ xFactor.power
-
-  for k in j..<yFactors.len:
-    let yFactor = yFactors[k]
-    result *= yFactor.prime ^ yFactor.power
-
 proc part01(
   instructions: string,
   map: TableRef[string, tuple[left: string, right: string]]
@@ -96,7 +34,8 @@ proc part02(
   for node in map.keys:
     if node[2] == 'A':
       var endings: HashSet[string]
-      init(endings)
+      endings.init()
+      endings.incl(node)
 
       var stepsFromCurrent = newSeq[uint]()
       var steps = 0.uint
@@ -114,20 +53,15 @@ proc part02(
 
       stepsFromAllStartings.add(stepsFromCurrent)
 
-  # Find the maximum number of steps. We'll build a list of primes up to this max.
-  var maxSteps = 0.uint
-  for steps in stepsFromAllStartings:
-    for step in steps:
-      maxSteps = maxSteps.max(step)
-
   # Find LCM of all steps.
-  let primes = allPrimes(maxSteps)
-  result = 1
+  var periods = newSeq[uint]()
   for allSteps in stepsFromAllStartings:
-    # For our input, `allSteps[0]` always equals `allSteps[1] - allSteps[0]`.
-    # Not quite sure if taking the LCD of all `allSteps[1] - allSteps[0]` is
-    # correct in general.
-    result = lcd(result, allSteps[1] - allSteps[0], primes)
+    # The input has `allSteps[0] == allSteps[1] - allSteps[0]`, and each ghost only
+    # goes to a single node ending in 'Z', so finding the LCM is correct. This might
+    # not be true for other inputs.
+    periods.add(allSteps[1] - allSteps[0])
+
+  lcm(periods)
 
 proc main() =
   let params = commandLineParams()
