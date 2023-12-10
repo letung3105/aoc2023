@@ -13,14 +13,14 @@ fn main() {
     let mut res02 = 0;
     let mut line = String::new();
     while reader.read_line(&mut line).expect("can't read line") > 0 {
-        // Parse line.
-        let history: Vec<_> = line
-            .split_whitespace()
-            .map(|x| x.parse::<i32>().expect("can't parse number"))
-            .collect();
+        let mut expanded: Vec<Vec<_>> = Vec::new();
+        expanded.push(
+            line.split_whitespace()
+                .map(|x| x.parse::<i32>().expect("can't parse number"))
+                .collect(),
+        );
 
         // Expand history.
-        let mut expanded = vec![history];
         while expanded[expanded.len() - 1].iter().any(|x| *x != 0) {
             let history = &expanded[expanded.len() - 1];
             let mut diff = Vec::new();
