@@ -27,6 +27,9 @@ target/day08nim: day08/main.nim
 target/day09nim: day09/main.nim
 	nim c -o:$@ $?
 
+target/day09rs: day09/main.rs
+	rustc -o $@ $?
+
 .PHONY: setup
 setup:
 	mkdir -p target
