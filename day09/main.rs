@@ -22,6 +22,7 @@ fn main() {
         // Expand history.
         let mut expanded = vec![history];
         while expanded[expanded.len() - 1].iter().any(|x| *x != 0) {
+            let history = &expanded[expanded.len() - 1];
             let mut diff = Vec::new();
             for i in 0..history.len() - 1 {
                 diff.push(history[i + 1] - history[i]);
@@ -34,7 +35,7 @@ fn main() {
         let mut extrapolated_backward = 0;
         for diff in expanded.iter().rev() {
             extrapolated_forward = extrapolated_forward + diff[diff.len() - 1];
-            extrapolated_backward = diff[diff.len() - 1] - extrapolated_backward;
+            extrapolated_backward = diff[0] - extrapolated_backward;
         }
 
         res01 += extrapolated_forward;
