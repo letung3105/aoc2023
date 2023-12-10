@@ -77,7 +77,6 @@ fn find_loop(
         let mut pos_on_loop = HashSet::new();
         let mut vertical_segments = Vec::new();
         let mut looped = false;
-        let mut steps = 0;
         loop {
             pos_on_loop.insert(pos);
             if let Some(p) = change_position(pos, facing, width, height) {
@@ -86,12 +85,7 @@ fn find_loop(
             } else {
                 break;
             };
-            if map[pos.1][pos.0] == 'S'
-                || map[pos.1][pos.0] == 'F'
-                || map[pos.1][pos.0] == '7'
-                || map[pos.1][pos.0] == 'J'
-                || map[pos.1][pos.0] == 'L'
-            {
+            if is_corner(map[pos.1][pos.0]) {
                 if pos_corner.0 == pos.0 {
                     vertical_segments.push(Segment {
                         start: pos_corner,
@@ -105,7 +99,6 @@ fn find_loop(
             } else {
                 break;
             };
-            steps += 1;
         }
         if looped {
             return Some((pos_on_loop, vertical_segments));
@@ -135,12 +128,12 @@ fn main() {
         line.clear();
     }
 
-    let mut res01 = pos_on_loop.len() / 2;
+    let (pos_on_loop, vertical_segments) = find_loop(start_pos, &map).expect("no loop found");
+    let res01 = pos_on_loop.len() / 2;
     let mut res02 = 0;
 
-    let (pos_on_loop, vertical_segments) = find_loop(start_pos, &map).expect("no loop found");
     for (y, row) in map.iter().enumerate() {
-        for (x, val) in row.iter().enumerate() {
+        for x in 0..row.len() {
             let pos = (x, y);
             if pos_on_loop.contains(&pos) {
                 continue;
