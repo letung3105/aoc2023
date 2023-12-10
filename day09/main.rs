@@ -21,8 +21,11 @@ fn main() {
         );
 
         // Expand history.
-        while expanded[expanded.len() - 1].iter().any(|x| *x != 0) {
-            let history = &expanded[expanded.len() - 1];
+        loop {
+            let history = expanded.last().unwrap();
+            if history.iter().all(|x| *x == 0) {
+                break;
+            }
             let mut diff = Vec::new();
             for i in 0..history.len() - 1 {
                 diff.push(history[i + 1] - history[i]);
