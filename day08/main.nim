@@ -58,7 +58,8 @@ proc part02(
   for allSteps in stepsFromAllStartings:
     # The input has `allSteps[0] == allSteps[1] - allSteps[0]`, and each ghost only
     # goes to a single node ending in 'Z', so finding the LCM is correct. This might
-    # not be true for other inputs.
+    # not be true for other inputs. A generalized solution to this problem could be
+    # using the Chinese remainder theorem.
     periods.add(allSteps[1] - allSteps[0])
 
   lcm(periods)
