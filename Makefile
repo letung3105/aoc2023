@@ -33,6 +33,9 @@ target/day09rs: day09/main.rs
 target/day10rs: day10/main.rs
 	rustc -o $@ $?
 
+target/day11rs: day11/main.rs
+	rustc -o $@ $?
+
 .PHONY: setup
 setup:
 	mkdir -p target
