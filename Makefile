@@ -45,6 +45,9 @@ target/day13rs: day13/main.rs
 target/day14rs: day14/main.rs
 	rustc -o $@ $?
 
+target/day15odin: day15/main.odin
+	odin build $? -file -out:$@
+
 .PHONY: setup
 setup:
 	mkdir -p target
