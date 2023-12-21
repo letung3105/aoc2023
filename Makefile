@@ -54,6 +54,9 @@ target/day16odin: day16/main.odin
 target/day17odin: day17/main.odin
 	odin build $? -file -out:$@
 
+target/day18odin: day18/main.odin
+	odin build $? -file -out:$@
+
 .PHONY: setup
 setup:
 	mkdir -p target
